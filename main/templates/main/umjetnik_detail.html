@@ -1,0 +1,19 @@
+{% extends 'main/index.html' %}
+
+{% block title %}Umjetnik: {{ umjetnik.ime }} {{ umjetnik.prezime }}{% endblock %}
+
+{% block content %}
+    <h1>{{ umjetnik.ime }} {{ umjetnik.prezime }}</h1>
+    <p><strong>Biografija:</strong> {{ umjetnik.biografija }}</p>
+
+    <h2>Umjetnička djela povezana s umjetnikom</h2>
+    <ul>
+        {% for djelo in umjetnik.slike_umjetnika.all %}
+            <li>
+                <a href="{% url 'main:djelo_detail' djelo.pk %}">{{ djelo.naslov }}</a>
+            </li>
+        {% empty %}
+            <li>Nema povezanih umjetničkih djela.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+  <h1>Kulturni događaji</h1>
+
+  <form method="get">
+      <label for="datum">Filtriraj po datumu:</label>
+      <input type="date" name="datum" id="datum">
+      <button type="submit">Filtriraj</button>
+  </form>
+
+  <ul>
+    {% for dogadaj in dogadaji %}
+      <li>
+        <a href="{% url 'main:dogadaj_detail' dogadaj.pk %}"><strong>{{ dogadaj.ime }}</strong> </a>
+        - {{ dogadaj.lokacija }} ({{ dogadaj.datum }}, {{ dogadaj.vrijeme }})
+        <br>{{ dogadaj.opis }}
+      </li>
+    {% empty %}
+      <li>Nema dostupnih događaja.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'main/index.html' %}
+
+{% block title %}Kulturni događaj: {{ dogadaj.ime }}{% endblock %}
+
+{% block content %}
+    <h1>{{ dogadaj.ime }}</h1>
+    <p><strong>Opis:</strong> {{ dogadaj.opis }}</p>
+    <p><strong>Datum:</strong> {{ dogadaj.datum }}</p>
+    <p><strong>Vrijeme:</strong> {{ dogadaj.vrijeme }}</p>
+    <p><strong>Lokacija:</strong> {{ dogadaj.lokacija }}</p>
+    <p><strong>Organizator:</strong> {{ dogadaj.organizator }}</p>
+
+    <h2>Povezana umjetnička djela</h2>
+    <ul>
+        {% for djelo in dogadaj.umjetnicka_djela.all %}
+            <li>
+                <a href="{% url 'main:djelo_detail' djelo.pk %}">{{ djelo.naslov }}</a>
+            </li>
+        {% empty %}
+            <li>Nema povezanih umjetničkih djela.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

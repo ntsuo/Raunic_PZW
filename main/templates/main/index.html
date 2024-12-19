@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Moja stranica{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>This is our homepage</h1>
+    </header>
+
+{% if user.is_authenticated %}
+    <p>Your name: {{ user.username }}</p>
+    <a href="{% url 'main:admin_dashboard' %}">
+        <button>Admin Dashboard</button>
+    </a>
+
+    <a href="{% url 'main:user_dashboard' %}">
+        <button>User Dashboard</button>
+    </a>
+{% else %}
+    <p>You're not logged in.</p>
+{% endif %}
+
+<nav>
+    <a href="{% url 'main:djelo_list' %}">
+        <button style="margin: 10px; padding: 10px 20px;">Popis djela</button>
+    </a>
+    <a href="{% url 'main:umjetnik_list' %}">
+        <button style="margin: 10px; padding: 10px 20px;">Popis umjetnika</button>
+    </a>
+    <a href="{% url 'main:dogadaj_list' %}">
+        <button style="margin: 10px; padding: 10px 20px;">Popis kulturnih događaja</button>
+    </a>
+</nav>
+
+<main>
+    {% block content %}
+    <!-- Glavni sadržaj stranice -->
+    {% endblock %}
+</main>
+</body>
+</html>

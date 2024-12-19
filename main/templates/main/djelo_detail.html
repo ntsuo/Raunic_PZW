@@ -1,0 +1,18 @@
+{% extends 'main/index.html' %}
+
+{% block title %}Djelo: {{ djelo.naslov }}{% endblock %}
+
+{% block content %}
+    <h1>{{ djelo.naslov }}</h1>
+    <img src="{{ djelo.slika.url }}" alt="Slika djela" style="max-width: 300px;">
+    <p><strong>Opis:</strong> {{ djelo.opis }}</p>
+    <p><strong>Medij:</strong> {{ djelo.medij }}</p>
+    <p><strong>Datum stvaranja:</strong> {{ djelo.datum_stvaranja }}</p>
+
+    <h2>Autor</h2>
+    <p>
+        <a href="{% url 'main:umjetnik_detail' djelo.umjetnik.pk %}">
+            {{ djelo.umjetnik.ime }} {{ djelo.umjetnik.prezime }}
+        </a>
+    </p>
+{% endblock %}

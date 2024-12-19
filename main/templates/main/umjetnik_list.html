@@ -1,0 +1,23 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+  <h1>Popis umjetnika</h1>
+
+  <form method="get">
+      <label for="q">Filtriraj po imenu ili prezimenu:</label>
+      <input type="text" name="q" id="q" placeholder="Unesite ime ili prezime">
+      <button type="submit">Filtriraj</button>
+  </form>
+
+<ul>
+    {% for umjetnik in umjetnici %}
+        <li>
+            <a href="{% url 'main:umjetnik_detail' umjetnik.pk %}">
+                {{ umjetnik.ime }} {{ umjetnik.prezime }}
+            </a>
+        </li>
+        {% empty %}
+        <li>Nema dostupnih umjetnika.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

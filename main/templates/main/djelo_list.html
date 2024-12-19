@@ -1,0 +1,40 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+  <h1>Popis umjetničkih djela</h1>
+
+  <form method="get">
+      <label for="naslov">Filtriraj po naslovu:</label>
+      <input type="text" name="naslov" id="naslov" placeholder="Unesite naslov djela">
+      <button type="submit">Filtriraj</button>
+  </form>
+
+  <ul>
+    {% for djelo in djela %}
+      <li>
+        <a href="{% url 'main:djelo_detail' djelo.pk %}"><strong>{{ djelo.naslov }}</strong></a>
+         - {{ djelo.umjetnik }} ({{ djelo.medij }})
+        <br>
+        Datum: {{ djelo.datum_stvaranja }}
+      </li>
+    {% empty %}
+      <li>Nema dostupnih umjetničkih djela za ovaj naslov.</li>
+    {% endfor %}
+  </ul>
+
+  {% if is_paginated %}
+    <div>
+      {% if page_obj.has_previous %}
+        <a href="?page=1">Prva</a>
+        <a href="?page={{ page_obj.previous_page_number }}">Prethodna</a>
+      {% endif %}
+
+      <span>Stranica {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}</span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Sljedeća</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Zadnja</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endblock %}
