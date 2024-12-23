@@ -4,10 +4,11 @@
   <h1>Kulturni događaji</h1>
 
   <form method="get">
-      <label for="datum">Filtriraj po datumu:</label>
-      <input type="date" name="datum" id="datum">
-      <button type="submit">Filtriraj</button>
-  </form>
+    <input type="text" name="ime" placeholder="Pretraži po imenu događaja">
+    <input type="text" name="lokacija" placeholder="Pretraži po lokaciji">
+    <input type="date" name="datum" placeholder="Pretraži po datumu">
+    <button type="submit">Pretraži</button>
+</form>
 
   <ul>
     {% for dogadaj in dogadaji %}

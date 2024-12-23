@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potvrda brisanja</title>
+
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Potvrda brisanja</h2>
+        <p>Želite li stvarno obrisati kulturni događaj: <strong>{{ dogadaj.ime }}</strong>?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Obriši</button>
+            <a href="{% url 'main:dogadaj_list' %}" class="btn btn-secondary">Otkaži</a>
+        </form>
+    </div>
+
+</body>
+</html>
+

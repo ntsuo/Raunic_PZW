@@ -8,6 +8,7 @@
     <p><strong>Opis:</strong> {{ djelo.opis }}</p>
     <p><strong>Medij:</strong> {{ djelo.medij }}</p>
     <p><strong>Datum stvaranja:</strong> {{ djelo.datum_stvaranja }}</p>
+    
 
     <h2>Autor</h2>
     <p>
@@ -15,4 +16,10 @@
             {{ djelo.umjetnik.ime }} {{ djelo.umjetnik.prezime }}
         </a>
     </p>
+    <a href="{% url 'main:djelo_update' pk=djelo.pk %}" >
+    <button>Uredi</button>
+    </a>
+    <a href="{% url 'main:djelo_delete' pk=djelo.pk %}" >
+    <button>Obriši</button>
+    </a>
 {% endblock %}

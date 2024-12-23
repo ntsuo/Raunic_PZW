@@ -20,4 +20,10 @@
             <li>Nema povezanih umjetničkih djela.</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'main:dogadaj_update' pk=dogadaj.pk %}" >
+        <button>Uredi</button>
+    </a>
+    <a href="{% url 'main:dogadaj_delete' pk=dogadaj.pk %}" >
+        <button>Obriši</button>
+    </a>
 {% endblock %}

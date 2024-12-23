@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potvrda Brisanja</title>
+</head>
+<body>
+    <div style="text-align: center; padding: 20px;">
+        <h1>Jeste li sigurni da želite obrisati "{{ djelo.naslov }}"?</h1>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" style="padding: 10px 20px; background-color: red; color: white; border: none; border-radius: 5px;">Da, Obriši</button>
+            <a href="{% url 'main:djelo_detail' pk=djelo.pk %}" style="padding: 10px 20px; background-color: gray; color: white; text-decoration: none; border-radius: 5px;">Poništi</a>
+        </form>
+    </div>
+</body>
+</html>

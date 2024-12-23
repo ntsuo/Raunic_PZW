@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Umjetnik</title>
+</head>
+<body>
+    <h1>Dodaj novog umjetnika</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Spremi</button>
+    </form>
+</body>
+</html>

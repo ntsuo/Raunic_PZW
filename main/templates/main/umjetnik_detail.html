@@ -16,4 +16,10 @@
             <li>Nema povezanih umjetničkih djela.</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'main:umjetnik_update' pk=umjetnik.pk %}" >
+        <button>Uredi</button>
+    </a>
+    <a href="{% url 'main:umjetnik_delete' pk=umjetnik.pk %}" >
+        <button>Obriši</button>
+    </a>
 {% endblock %}

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Kulturni Dogadaj</title>
+</head>
+<body>
+    <h1>Dodaj novi kulturni događaj</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Spremi</button>
+    </form>
+</body>
+</html>

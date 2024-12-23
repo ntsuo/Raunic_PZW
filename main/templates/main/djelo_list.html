@@ -4,10 +4,10 @@
   <h1>Popis umjetničkih djela</h1>
 
   <form method="get">
-      <label for="naslov">Filtriraj po naslovu:</label>
-      <input type="text" name="naslov" id="naslov" placeholder="Unesite naslov djela">
-      <button type="submit">Filtriraj</button>
-  </form>
+    <input type="text" name="naslov" placeholder="Pretraži po naslovu">
+    <input type="text" name="medij" placeholder="Pretraži po mediju">
+    <button type="submit">Pretraži</button>
+</form>
 
   <ul>
     {% for djelo in djela %}

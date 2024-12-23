@@ -12,6 +12,14 @@ from django.views.generic import ListView
 from django.db.models import Q
 from .models import Djelo, Umjetnik, KulturniDogadaj
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
+from .forms import UmjetnikForm, DjeloForm, KulturniDogadajForm
+from django.views import View
+from django.shortcuts import render
+from django.urls import reverse
+from django.views.generic import UpdateView
+from django.views.generic.edit import DeleteView
+from django.http import HttpResponseForbidden
 
 # provjera je li osoba administrator
 def is_admin(user):
@@ -73,9 +81,9 @@ def delete_user(request, user_id):
 
 
 # pogled korisnika
-@user_passes_test(is_regular_user)
+@user_passes_test(is_regular_user) #ako je admin?
 def user_dashboard(request):
-    return render(request, 'user_dashboard.html')
+    return render(request, 'main/user_dashboard.html')
 
 @login_required
 def user_management(request):
@@ -127,11 +135,15 @@ class DjeloListView(ListView):
 
     def get_queryset(self):
         queryset = Djelo.objects.all()
-        naslov= self.request.GET.get('naslov') 
+        naslov = self.request.GET.get('naslov')
+        medij = self.request.GET.get('medij')
+
         if naslov:
             queryset = queryset.filter(naslov__icontains=naslov)
-        return queryset
+        if medij:
+            queryset = queryset.filter(medij__icontains=medij)
 
+        return queryset
 
 class UmjetnikListView(ListView):
     model = Umjetnik
@@ -141,10 +153,17 @@ class UmjetnikListView(ListView):
     def get_queryset(self):
         queryset = Umjetnik.objects.all()
         ime_prezime_filter = self.request.GET.get('q')
+        sortiranje = self.request.GET.get('sort')
         if ime_prezime_filter:
             queryset = queryset.filter(
                 Q(ime__icontains=ime_prezime_filter) | Q(prezime__icontains=ime_prezime_filter)
             )
+        if sortiranje:
+            if sortiranje == 'ime':
+                queryset = queryset.order_by('ime')
+            elif sortiranje == 'prezime':
+                queryset = queryset.order_by('prezime')
+
         return queryset
 
 
@@ -156,8 +175,16 @@ class KulturniDogadajListView(ListView):
     def get_queryset(self):
         queryset = KulturniDogadaj.objects.all()
         datum_filter = self.request.GET.get('datum')
+        lokacija_filter = self.request.GET.get('lokacija')
+        ime_filter = self.request.GET.get('ime')
+
         if datum_filter:
             queryset = queryset.filter(datum=datum_filter)
+        if lokacija_filter:
+            queryset = queryset.filter(lokacija__icontains=lokacija_filter)
+        if ime_filter:
+            queryset = queryset.filter(ime__icontains=ime_filter)
+
         return queryset
     
 ## DETAILVIEW-SI
@@ -171,7 +198,121 @@ class DjeloDetailView(DetailView):
     template_name = 'main/djelo_detail.html' 
     context_object_name = 'djelo'
 
+
 class KulturniDogadajDetailView(DetailView):
     model = KulturniDogadaj
     template_name = 'main/dogadaj_detail.html'
     context_object_name = 'dogadaj'
+
+### LANDING PAGE
+class LandingPageView(View):
+    def get(self, request, *args, **kwargs):
+        if not is_admin(request.user):
+            return HttpResponseForbidden("Nemate dopuštenje za pristup ovoj stranici.")
+        return render(request, 'main/landing.html')
+    
+@user_passes_test(is_admin)
+def landing_page(request):
+    return render(request, 'main/landing.html')
+
+### CRUD AKCIJE
+
+# CREATE
+class UmjetnikCreateView(CreateView):
+    model = Umjetnik
+    form_class = UmjetnikForm
+    template_name = 'main/umjetnik_form.html'
+
+    def get_success_url(self):
+        return reverse('main:umjetnik_detail', kwargs={'pk': self.object.pk})
+
+class DjeloCreateView(CreateView):
+    model = Djelo
+    form_class = DjeloForm
+    template_name = 'main/djelo_form.html'
+
+    def get_success_url(self):
+        return reverse('main:djelo_detail', kwargs={'pk': self.object.pk})
+
+class KulturniDogadajCreateView(CreateView):
+    model = KulturniDogadaj
+    form_class = KulturniDogadajForm
+    template_name = 'main/kulturnidogadaj_form.html'
+
+    def get_success_url(self):
+        return reverse('main:dogadaj_detail', kwargs={'pk': self.object.pk})
+    
+# UPDATE
+class DjeloUpdateView(UpdateView):
+    model = Djelo
+    form_class = DjeloForm
+    template_name = 'main/djelo_update.html'
+    context_object_name = 'djelo'
+
+    def get_success_url(self):
+        return reverse('main:djelo_detail', kwargs={'pk': self.object.pk})
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user): 
+            return HttpResponseForbidden("Nemate dopuštenje za uređivanje ovog objekta.")
+        return super().dispatch(request, *args, **kwargs)
+
+class UmjetnikUpdateView(UpdateView):
+    model = Umjetnik
+    form_class = UmjetnikForm
+    template_name = 'main/umjetnik_update.html'
+    context_object_name = 'umjetnik'
+
+    def get_success_url(self):
+        return reverse('main:umjetnik_detail', kwargs={'pk': self.object.pk})
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user): 
+            return HttpResponseForbidden("Nemate dopuštenje za uređivanje ovog objekta.")
+        return super().dispatch(request, *args, **kwargs)
+    
+class KulturniDogadajUpdateView(UpdateView):
+    model = KulturniDogadaj
+    form_class = KulturniDogadajForm
+    template_name = 'main/dogadaj_update.html'
+    context_object_name = 'dogadaj'
+
+    def get_success_url(self):
+        return reverse('main:dogadaj_detail', kwargs={'pk': self.object.pk})
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user): 
+            return HttpResponseForbidden("Nemate dopuštenje za uređivanje ovog objekta.")
+        return super().dispatch(request, *args, **kwargs)
+
+# DELETE
+
+class DjeloDeleteView(DeleteView):
+    model = Djelo
+    template_name = 'main/djelo_delete.html'
+    success_url = reverse_lazy('main:djelo_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user): 
+            return HttpResponseForbidden("Nemate dopuštenje za brisanje ovog objekta.")
+        return super().dispatch(request, *args, **kwargs)
+
+class UmjetnikDeleteView(DeleteView):
+    model = Umjetnik
+    template_name = 'main/umjetnik_delete.html'
+    success_url = reverse_lazy('main:umjetnik_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user): 
+            return HttpResponseForbidden("Nemate dopuštenje za brisanje ovog objekta.")
+        return super().dispatch(request, *args, **kwargs)
+
+class KulturniDogadajDeleteView(DeleteView):
+    model = KulturniDogadaj
+    template_name = 'main/dogadaj_delete.html'
+    success_url = reverse_lazy('main:dogadaj_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not is_admin(request.user): 
+            return HttpResponseForbidden("Nemate dopuštenje za brisanje ovog objekta.")
+        return super().dispatch(request, *args, **kwargs)
