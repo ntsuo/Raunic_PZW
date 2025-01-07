@@ -1,3 +1,4 @@
+**PRAVA GRANA**
 Naziv zadatka: Virtualna galerija umjetnosti i kulturoloških događanja
 Autor: Silvija Raunić
 Opis funkcionalnosti aplikacije: 
