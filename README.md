@@ -1,6 +1,9 @@
 **PRAVA GRANA**
+
 Naziv zadatka: Virtualna galerija umjetnosti i kulturoloških događanja
+
 Autor: Silvija Raunić
+
 Opis funkcionalnosti aplikacije: 
 - Autentifikacija - mogućnost registracije novih korisnika i prijave već registriranih korisnika (korisnik se prijavljuje s username-om i lozinkom),
 - Autorizacija - dvije vrste korisnika: administrator (admin loz:12345678, silvija) i korisnik (Korisnik, ivan, ana...)
